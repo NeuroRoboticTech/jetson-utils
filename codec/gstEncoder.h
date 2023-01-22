@@ -23,6 +23,8 @@
 #ifndef __GSTREAMER_ENCODER_H__
 #define __GSTREAMER_ENCODER_H__
 
+#include <memory>
+
 #include "gstUtility.h"
 #include "videoOutput.h"
 #include "RingBuffer.h"
@@ -49,6 +51,11 @@ public:
 	 * Create an encoder from the provided video options.
 	 */
 	static gstEncoder* Create( const videoOptions& options );
+
+	/**
+	 * Create an encoder from the provided video options.
+	 */
+	static std::shared_ptr<gstEncoder> CreateShared( const videoOptions& options );
 
 	/**
 	 * Create an encoder instance from resource URI and codec.
@@ -114,8 +121,8 @@ public:
 	 */
 	static bool IsSupportedExtension( const char* ext );
 
-protected:
 	gstEncoder( const videoOptions& options );
+protected:
 	
 	bool init();
 

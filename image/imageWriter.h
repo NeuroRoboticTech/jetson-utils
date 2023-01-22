@@ -23,6 +23,7 @@
 #ifndef __IMAGE_WRITER_H_
 #define __IMAGE_WRITER_H_
 
+#include <memory>
 
 #include "videoOutput.h"
 
@@ -59,6 +60,11 @@ public:
 	 * Create an imageWriter instance from the provided video options.
 	 */
 	static imageWriter* Create( const videoOptions& options );
+
+	/**
+	 * Create an imageWriter instance from the provided video options.
+	 */
+	static std::shared_ptr<imageWriter> CreateShared( const videoOptions& options );
 
 	/**
 	 * Destructor
@@ -107,8 +113,8 @@ public:
 	 */
 	static bool IsSupportedExtension( const char* ext );
 
-protected:
 	imageWriter( const videoOptions& options );
+protected:
 
 	uint32_t mFileCount;
 	char     mFileOut[1024];

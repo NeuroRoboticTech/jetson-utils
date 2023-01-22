@@ -86,6 +86,14 @@ imageWriter* imageWriter::Create( const videoOptions& options )
 
 
 // Create
+std::shared_ptr<imageWriter> imageWriter::CreateShared( const videoOptions& options )
+{
+	auto writer = std::make_shared<imageWriter>(options);
+	return writer;
+}
+
+
+// Create
 imageWriter* imageWriter::Create( const char* resource, const videoOptions& options )
 {
 	videoOptions opt = options;

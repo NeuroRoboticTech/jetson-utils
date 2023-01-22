@@ -23,6 +23,8 @@
 #ifndef __GSTREAMER_DECODER_H__
 #define __GSTREAMER_DECODER_H__
 
+#include <memory>
+
 #include "gstUtility.h"
 #include "gstBufferManager.h"
 
@@ -53,6 +55,11 @@ public:
 	 * Create a decoder from the provided video options.
 	 */
 	static gstDecoder* Create( const videoOptions& options );
+
+	/**
+	 * Create a decoder from the provided video options.
+	 */
+	static std::shared_ptr<gstDecoder> CreateShared( const videoOptions& options );
 
 	/**
 	 * Create a decoder instance from resource URI and codec.
@@ -127,8 +134,9 @@ public:
 	 */
 	static bool IsSupportedExtension( const char* ext );
 
-protected:
 	gstDecoder( const videoOptions& options );
+
+protected:
 	
 	void checkMsgBus();
 	void checkBuffer();

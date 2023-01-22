@@ -122,6 +122,24 @@ gstEncoder* gstEncoder::Create( const videoOptions& options )
 
 
 // Create
+std::shared_ptr<gstEncoder> gstEncoder::CreateShared( const videoOptions& options )
+{
+	auto enc = std::make_shared<gstEncoder>(options);
+	
+	if( !enc )
+		return NULL;
+	
+	if( !enc->init() )
+	{
+		LogError(LOG_GSTREAMER "gstEncoder -- failed to create encoder engine\n");
+		return NULL;
+	}
+	
+	return enc;
+}
+
+
+// Create
 gstEncoder* gstEncoder::Create( const URI& resource, videoOptions::Codec codec )
 {
 	videoOptions opt;

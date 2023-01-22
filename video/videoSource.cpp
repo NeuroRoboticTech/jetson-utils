@@ -78,6 +78,42 @@ videoSource* videoSource::Create( const videoOptions& options )
 	return src;
 }
 
+
+// Create
+std::shared_ptr<videoSource> videoSource::CreateShared( const videoOptions& options )
+{
+	std::shared_ptr<videoSource> src = NULL;
+	const URI& uri = options.resource;
+
+	if( uri.protocol == "file" )
+	{
+		if( gstDecoder::IsSupportedExtension(uri.extension.c_str()) )
+			src = gstDecoder::CreateShared(options);
+		else
+			src = imageLoader::CreateShared(options);
+	}
+	else if( uri.protocol == "rtp" || uri.protocol == "rtsp" )
+	{
+		src = gstDecoder::CreateShared(options);
+	}
+	else if( uri.protocol == "csi" || uri.protocol == "v4l2" )
+	{
+		src = gstCamera::CreateShared(options);
+	}
+	else
+	{
+		LogError(LOG_VIDEO "videoSource -- unsupported protocol (%s)\n", uri.protocol.size() > 0 ? uri.protocol.c_str() : "null");
+	}
+
+	if( !src )
+		return NULL;
+
+	LogSuccess(LOG_VIDEO "created %s from %s\n", src->TypeToStr(), src->GetResource().string.c_str());
+	src->GetOptions().Print(src->TypeToStr());
+	return src;
+}
+
+
 // Create
 videoSource* videoSource::Create( const char* resource, const videoOptions& options )
 {

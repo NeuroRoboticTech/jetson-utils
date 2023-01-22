@@ -24,6 +24,7 @@
 #define __GSTREAMER_CAMERA_H__
 
 #include <gst/gst.h>
+#include <memory>
 #include <string>
 
 #include "videoSource.h"
@@ -61,6 +62,11 @@ public:
 	 * Create a MIPI CSI or V4L2 camera device.
 	 */
 	static gstCamera* Create( const videoOptions& options );
+
+	/**
+	 * Create a MIPI CSI or V4L2 camera device with smart pointer.
+	 */
+	static std::shared_ptr<gstCamera> CreateShared( const videoOptions& options );
 
 	/**
 	 * Create a MIPI CSI or V4L2 camera device.
@@ -203,13 +209,13 @@ public:
 	 * Default camera height, unless otherwise specified during Create()
  	 */
 	static const uint32_t DefaultHeight = 720;
+
+	gstCamera( const videoOptions& options );
 	
 private:
 	static void onEOS(_GstAppSink* sink, void* user_data);
 	static GstFlowReturn onPreroll(_GstAppSink* sink, void* user_data);
 	static GstFlowReturn onBuffer(_GstAppSink* sink, void* user_data);
-
-	gstCamera( const videoOptions& options );
 
 	bool init();
 	bool discover();

@@ -219,6 +219,45 @@ glDisplay* glDisplay::Create( const videoOptions& options )
 
 
 // Create
+std::shared_ptr<glDisplay> glDisplay::CreateShared( const videoOptions& options )
+{
+	auto vp = std::make_shared<glDisplay>(options);
+	
+	if( !vp )
+		return NULL;
+		
+	if( !vp->initWindow() )
+	{
+		LogError(LOG_GL "failed to create X11 Window.\n");
+		vp = nullptr;
+		return NULL;
+	}
+	
+	if( !vp->initGL() )
+	{
+		LogError(LOG_GL "failed to initialize OpenGL.\n");
+		vp = nullptr;
+		return NULL;
+	}
+	
+	GLenum err = glewInit();
+	
+	if (GLEW_OK != err)
+	{
+		LogError(LOG_GL "GLEW Error: %s\n", glewGetErrorString(err));
+		vp = nullptr;
+		return NULL;
+	}
+	
+	vp->mID = gDisplays.size();
+	gDisplays.push_back(vp.get());
+
+	LogInfo(LOG_GL "glDisplay -- display device initialized (%ux%u)\n", vp->GetWidth(), vp->GetHeight());
+	return vp;
+}
+
+
+// Create
 /*glDisplay* glDisplay::Create( float r, float g, float b, float a )
 {
 	return Create(DEFAULT_TITLE, r, g, b, a);

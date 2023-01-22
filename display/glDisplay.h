@@ -30,6 +30,7 @@
 #include "glEvents.h"
 #include "glWidget.h"
 
+#include <memory>
 #include <time.h>
 #include <vector>
 
@@ -65,6 +66,11 @@ public:
 	 * Create a new OpenGL display window with the specified options.
 	 */
 	static glDisplay* Create( const videoOptions& options );
+
+	/**
+	 * Create a new OpenGL display window with the specified options.
+	 */
+	static std::shared_ptr<glDisplay> CreateShared( const videoOptions& options );
 
 	/**
 	 * Destroy window
@@ -585,8 +591,8 @@ public:
 
 	///@}
 
-protected:
 	glDisplay( const videoOptions& options );
+protected:
 		
 	bool initWindow();
 	bool initGL();

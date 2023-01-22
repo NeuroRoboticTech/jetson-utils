@@ -107,6 +107,33 @@ gstCamera* gstCamera::Create( const videoOptions& options )
 	
 	if( !cam )
 		return NULL;
+
+	// initialize camera (with fallback)
+	if( !cam->init() )
+	{
+		LogError(LOG_GSTREAMER "gstCamera -- failed to create device %s\n", cam->GetResource().c_str());
+		return NULL;
+	}
+
+	LogInfo(LOG_GSTREAMER "gstCamera successfully created device %s\n", cam->GetResource().c_str()); 
+	return cam;
+}
+
+
+// Create
+std::shared_ptr<gstCamera> gstCamera::CreateShared( const videoOptions& options )
+{
+	if( !gstreamerInit() )
+	{
+		LogError(LOG_GSTREAMER "failed to initialize gstreamer API\n");
+		return NULL;
+	}
+
+	// create camera instance
+	auto cam = std::make_shared<gstCamera>(options);
+	
+	if( !cam )
+		return NULL;
 	
 	// initialize camera (with fallback)
 	if( !cam->init() )

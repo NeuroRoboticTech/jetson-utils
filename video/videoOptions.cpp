@@ -43,6 +43,24 @@ videoOptions::videoOptions()
 	codec       = CODEC_UNKNOWN;
 }
 
+// constructor using existing video options.
+//videoOptions::videoOptions(const videoOptions& opts)
+//{
+//	width 	  = opts.width;
+//	height 	  = opts.height;
+//	frameRate   = opts.frameRate;
+//	bitRate     = opts.bitRate;
+//	numBuffers  = opts.numBuffers;
+//	loop        = opts.loop;
+//	rtspLatency = opts.rtspLatency;
+//	zeroCopy    = opts.zeroCopy;
+//	ioType      = opts.ioType;
+//	deviceType  = opts.deviceType;
+//	flipMethod  = opts.flipMethod;
+//	codec       = opts.codec;
+//	LogInfo("video options copy constructor.\n");
+//}
+
 
 // Print
 void videoOptions::Print( const char* prefix ) const
@@ -67,6 +85,7 @@ void videoOptions::Print( const char* prefix ) const
 	LogInfo("  -- numBuffers: %u\n", numBuffers);
 	LogInfo("  -- zeroCopy:   %s\n", zeroCopy ? "true" : "false");	
 	LogInfo("  -- flipMethod: %s\n", FlipMethodToStr(flipMethod));
+	LogInfo("  -- flipMethod: %d\n", flipMethod);
 	LogInfo("  -- loop:       %i\n", loop);
 	LogInfo("  -- rtspLatency %i\n", rtspLatency);
 	

@@ -124,6 +124,20 @@ imageLoader* imageLoader::Create( const videoOptions& options )
 
 
 // Create
+std::shared_ptr<imageLoader> imageLoader::CreateShared( const videoOptions& options )
+{
+	auto loader = std::make_shared<imageLoader>(options);
+
+	if( loader->mFiles.size() == 0 )
+	{
+		return NULL;
+	}
+
+	return loader;
+}
+
+
+// Create
 imageLoader* imageLoader::Create( const char* resource, const videoOptions& options )
 {
 	videoOptions opt = options;

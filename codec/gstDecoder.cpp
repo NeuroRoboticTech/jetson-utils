@@ -151,6 +151,24 @@ gstDecoder* gstDecoder::Create( const videoOptions& options )
 
 
 // Create
+std::shared_ptr<gstDecoder> gstDecoder::CreateShared( const videoOptions& options )
+{
+	auto dec = std::make_shared<gstDecoder>(options);
+
+	if( !dec )
+		return NULL;
+
+	if( !dec->init() )
+	{
+		LogError(LOG_GSTREAMER "gstDecoder -- failed to create decoder for %s\n", dec->mOptions.resource.string.c_str());
+		return NULL;
+	}
+	
+	return dec;
+}
+
+
+// Create
 gstDecoder* gstDecoder::Create( const URI& resource, videoOptions::Codec codec )
 {
 	videoOptions opt;

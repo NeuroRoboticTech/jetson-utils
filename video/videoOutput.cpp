@@ -101,6 +101,42 @@ videoOutput* videoOutput::Create( const videoOptions& options )
 	return output;
 }
 
+
+// Create
+std::shared_ptr<videoOutput> videoOutput::CreateShared( const videoOptions& options )
+{
+	std::shared_ptr<videoOutput> output = NULL;
+	const URI& uri = options.resource;
+	
+	if( uri.protocol == "file" )
+	{
+		if( gstEncoder::IsSupportedExtension(uri.extension.c_str()) )
+			output = gstEncoder::CreateShared(options);
+		else
+			output = imageWriter::CreateShared(options);
+	}
+	else if( uri.protocol == "rtp" || uri.protocol == "rtmp" )
+	{
+		output = gstEncoder::CreateShared(options);
+	}
+	else if( uri.protocol == "display" )
+	{
+		output = glDisplay::CreateShared(options);
+	}
+	else
+	{
+		LogError(LOG_VIDEO "videoOutput -- unsupported protocol (%s)\n", uri.protocol.size() > 0 ? uri.protocol.c_str() : "null");
+	}
+
+	if( !output )
+		return NULL;
+
+	LogSuccess(LOG_VIDEO "created %s from %s\n", output->TypeToStr(), output->GetResource().string.c_str());
+	output->GetOptions().Print(output->TypeToStr());
+	return output;
+}
+
+
 // Create
 videoOutput* videoOutput::Create( const char* resource, const videoOptions& options )
 {

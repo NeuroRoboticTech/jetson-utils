@@ -23,11 +23,11 @@
 #ifndef __VIDEO_OUTPUT_H_
 #define __VIDEO_OUTPUT_H_
 
-
 #include "videoOptions.h"
 #include "imageFormat.h"		
 #include "commandLine.h"
 
+#include <memory>
 #include <vector>
 
 
@@ -91,6 +91,12 @@ public:
 	 * It's expected that the supplied videoOptions already contain a valid resource URI.
 	 */
 	static videoOutput* Create( const videoOptions& options );
+
+	/**
+	 * Create videoOutput interface from a videoOptions struct that's already been filled out.
+	 * It's expected that the supplied videoOptions already contain a valid resource URI.
+	 */
+	static std::shared_ptr<videoOutput> CreateShared( const videoOptions& options );
 
 	/**
 	 * Create videoOutput interface from a resource URI string and optional videoOptions.

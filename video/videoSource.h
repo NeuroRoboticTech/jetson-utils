@@ -23,6 +23,7 @@
 #ifndef __VIDEO_SOURCE_H_
 #define __VIDEO_SOURCE_H_
 
+#include <memory>
 
 #include "videoOptions.h"
 #include "imageFormat.h"		
@@ -117,6 +118,12 @@ public:
 	 * It's expected that the supplied videoOptions already contain a valid resource URI.
 	 */
 	static videoSource* Create( const videoOptions& options );
+
+	/**
+	 * Create videoSource interface from a videoOptions struct that's already been filled out.
+	 * It's expected that the supplied videoOptions already contain a valid resource URI.
+	 */
+	static std::shared_ptr<videoSource> CreateShared( const videoOptions& options );
 
 	/**
 	 * Create videoSource interface from a resource URI string and optional videoOptions.

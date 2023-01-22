@@ -41,6 +41,11 @@ public:
 	 * Constructor using default options.
 	 */
 	videoOptions();
+
+	/**
+	 * Constructor copying from existing options.
+	 */
+	//videoOptions(const videoOptions& opts);
 	
 	/**
 	 * The resource URI of the device, IP stream, or file/directory.

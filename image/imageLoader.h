@@ -26,6 +26,7 @@
 
 #include "videoSource.h"
 
+#include <memory>
 #include <string>
 #include <vector>
 
@@ -61,6 +62,11 @@ public:
 	 * Create an imageLoader instance from the provided video options.
 	 */
 	static imageLoader* Create( const videoOptions& options );
+
+	/**
+	 * Create an imageLoader instance from the provided video options.
+	 */
+	static std::shared_ptr<imageLoader> CreateShared( const videoOptions& options );
 
 	/**
 	 * Destructor
@@ -134,8 +140,9 @@ public:
 	 */
 	static bool IsSupportedExtension( const char* ext );
 
-protected:
 	imageLoader( const videoOptions& options );
+
+protected:
 
 	inline bool isLooping() const { return (mOptions.loop < 0) || ((mOptions.loop > 0) && (mLoopCount < mOptions.loop)); }
 
